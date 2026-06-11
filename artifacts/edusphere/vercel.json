@@ -3,7 +3,7 @@
   "buildCommand": "PORT=5173 BASE_PATH=/ pnpm run build",
   "outputDirectory": "dist/public",
   "installCommand": "cd ../.. && pnpm install",
-  "framework": "vite",
+  "framework": null,
   "env": {
     "PORT": "5173",
     "BASE_PATH": "/"

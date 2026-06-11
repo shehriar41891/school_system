@@ -10,15 +10,29 @@ Open **Project → Settings → General** and set:
 |---------|--------|
 | **Repository** | `shehriar41891/school_system` |
 | **Production Branch** | `main` |
-| **Root Directory** | *(empty — repo root)* **OR** `artifacts/edusphere` |
+| **Root Directory** | `artifacts/edusphere` *(recommended)* or empty (repo root) |
 | **Framework Preset** | Other |
-| **Build Command** | *(empty — uses `vercel.json` or `vercel-build` script)* |
-| **Output Directory** | *(empty — uses `vercel.json`)* |
-| **Install Command** | *(empty — uses `vercel.json`)* |
+| **Build Command** | None — override **disabled** ✓ |
+| **Output Directory** | None — override **disabled** ✓ |
+| **Install Command** | None — override **disabled** ✓ |
 
-**Do not** set Root Directory to `artifacts/api-server`. That folder is a backend stub; Vercel will try to compile it as a serverless API and fail with `pino-http` / `src/app.ts` errors.
+Vercel reads commands from `vercel.json` automatically when overrides are off.
 
-If you previously set Root Directory to `artifacts/api-server`, change it to empty or `artifacts/edusphere`, then redeploy.
+### If Root Directory = `artifacts/edusphere` (recommended)
+
+Uses `artifacts/edusphere/vercel.json`:
+- Install: `cd ../.. && pnpm install`
+- Build: `PORT=5173 BASE_PATH=/ pnpm run build`
+- Output: `dist/public`
+
+### If Root Directory = empty (repo root)
+
+Uses root `vercel.json`:
+- Install: `pnpm install`
+- Build: `PORT=5173 BASE_PATH=/ pnpm --filter @workspace/edusphere run build`
+- Output: `artifacts/edusphere/dist/public`
+
+**Do not** set Root Directory to `artifacts/api-server`.
 
 ## Redeploy
 
