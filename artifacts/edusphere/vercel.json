@@ -1,6 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "PORT=5173 BASE_PATH=/ pnpm run build",
+  "buildCommand": "node scripts/build.mjs",
   "outputDirectory": "dist/public",
   "installCommand": "cd ../.. && pnpm install",
   "framework": null,

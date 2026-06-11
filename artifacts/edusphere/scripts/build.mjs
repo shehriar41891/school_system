@@ -1,4 +1,3 @@
-import { spawnSync } from "node:child_process";
 import { rmSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -13,16 +12,8 @@ rmSync(resolve(pkgRoot, "node_modules", ".vite-temp"), {
   force: true,
 });
 
-const pnpm = process.platform === "win32" ? "pnpm.cmd" : "pnpm";
-const result = spawnSync(
-  pnpm,
-  ["exec", "vite", "build", "--config", "vite.config.ts"],
-  {
-    cwd: pkgRoot,
-    stdio: "inherit",
-    env: process.env,
-    shell: process.platform === "win32",
-  },
-);
+const { build } = await import("vite");
 
-process.exit(result.status ?? 1);
+await build({
+  configFile: resolve(pkgRoot, "vite.config.ts"),
+});
