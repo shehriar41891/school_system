@@ -21,9 +21,11 @@ Vercel reads commands from `vercel.json` automatically when overrides are off.
 ### If Root Directory = `artifacts/edusphere` (recommended)
 
 Uses `artifacts/edusphere/vercel.json`:
-- Install: `cd ../.. && pnpm install`
-- Build: `PORT=5173 BASE_PATH=/ pnpm run build`
+- Install: `cd ../.. && pnpm install --filter @workspace/edusphere...`
+- Build: `node scripts/build.mjs`
 - Output: `dist/public`
+
+In the build log you should see: `[edusphere] build.mjs starting`
 
 ### If Root Directory = empty (repo root)
 
