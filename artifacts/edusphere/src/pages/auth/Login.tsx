@@ -4,9 +4,11 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GraduationCap, ShieldAlert, Users, UserSquare2 } from "lucide-react";
+import { GraduationCap, ShieldAlert, Users, UserSquare2, Brain, Sparkles } from "lucide-react";
+
+type LoginRole = 'admin' | 'teacher' | 'student' | 'parent' | 'principal';
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -14,11 +16,11 @@ export default function Login() {
   const { login } = useAuth();
   const [, setLocation] = useLocation();
 
-  const handleLogin = (role: 'admin' | 'student' | 'parent', roleName: string) => {
-    // In a real app, this would validate credentials against an API
+  const handleLogin = (role: LoginRole) => {
+    const roleName = role === 'principal' ? 'Principal' : role === 'teacher' ? 'Teacher' : role.charAt(0).toUpperCase() + role.slice(1);
     login({
       id: "U001",
-      role,
+      role: role as 'admin' | 'student' | 'parent' | 'principal' | 'teacher',
       name: roleName,
       email
     });
@@ -30,6 +32,14 @@ export default function Login() {
     setPassword(`${roleType.charAt(0).toUpperCase() + roleType.slice(1)}@123`);
   };
 
+  const roles: { value: LoginRole; label: string; icon: React.ReactNode }[] = [
+    { value: 'admin', label: 'Admin', icon: <ShieldAlert className="h-4 w-4 mr-1 hidden sm:block" /> },
+    { value: 'principal', label: 'Principal', icon: <Brain className="h-4 w-4 mr-1 hidden sm:block" /> },
+    { value: 'teacher', label: 'Teacher', icon: <UserSquare2 className="h-4 w-4 mr-1 hidden sm:block" /> },
+    { value: 'student', label: 'Student', icon: <GraduationCap className="h-4 w-4 mr-1 hidden sm:block" /> },
+    { value: 'parent', label: 'Parent', icon: <Users className="h-4 w-4 mr-1 hidden sm:block" /> },
+  ];
+
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
       <div className="mb-8 flex flex-col items-center">
@@ -37,44 +47,36 @@ export default function Login() {
           <GraduationCap className="h-8 w-8" />
         </div>
         <h1 className="text-3xl font-bold text-primary">EduSphere</h1>
-        <p className="text-muted-foreground mt-2">School Management System</p>
+        <p className="text-muted-foreground mt-2 flex items-center gap-1">
+          <Sparkles className="h-4 w-4 text-violet-500" />
+          AI-Powered School Management System
+        </p>
       </div>
 
-      <Card className="w-full max-w-md shadow-lg">
+      <Card className="w-full max-w-lg shadow-lg">
         <CardHeader className="text-center pb-2">
           <CardTitle className="text-2xl">Welcome Back</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
+          <CardDescription>Sign in to your AI-enhanced portal</CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="admin" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-6">
-              <TabsTrigger value="admin" onClick={() => fillDemoCreds("admin")}>
-                <ShieldAlert className="h-4 w-4 mr-2 hidden sm:block" /> Admin
-              </TabsTrigger>
-              <TabsTrigger value="teacher" onClick={() => fillDemoCreds("teacher")}>
-                <UserSquare2 className="h-4 w-4 mr-2 hidden sm:block" /> Staff
-              </TabsTrigger>
-              <TabsTrigger value="student" onClick={() => fillDemoCreds("student")}>
-                <GraduationCap className="h-4 w-4 mr-2 hidden sm:block" /> Student
-              </TabsTrigger>
-              <TabsTrigger value="parent" onClick={() => fillDemoCreds("parent")}>
-                <Users className="h-4 w-4 mr-2 hidden sm:block" /> Parent
-              </TabsTrigger>
+            <TabsList className="grid w-full grid-cols-5 mb-6">
+              {roles.map((r) => (
+                <TabsTrigger key={r.value} value={r.value} onClick={() => fillDemoCreds(r.value === 'teacher' ? 'teacher' : r.value)}>
+                  {r.icon} {r.label}
+                </TabsTrigger>
+              ))}
             </TabsList>
 
-            {['admin', 'teacher', 'student', 'parent'].map((role) => (
-              <TabsContent key={role} value={role}>
-                <form onSubmit={(e) => {
-                  e.preventDefault();
-                  // For the sake of this mock app, 'teacher' logs into 'admin' portal
-                  handleLogin(role === 'teacher' ? 'admin' : role as any, role.charAt(0).toUpperCase() + role.slice(1));
-                }} className="space-y-4">
+            {roles.map((r) => (
+              <TabsContent key={r.value} value={r.value}>
+                <form onSubmit={(e) => { e.preventDefault(); handleLogin(r.value); }} className="space-y-4">
                   <div className="space-y-2">
                     <Label htmlFor="email">Email Address or ID</Label>
-                    <Input 
-                      id="email" 
-                      type="text" 
-                      placeholder="admin@edusphere"
+                    <Input
+                      id="email"
+                      type="text"
+                      placeholder={`${r.value}@edusphere`}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
@@ -85,23 +87,23 @@ export default function Login() {
                       <Label htmlFor="password">Password</Label>
                       <a href="#" className="text-xs text-accent hover:underline">Forgot password?</a>
                     </div>
-                    <Input 
-                      id="password" 
-                      type="password" 
+                    <Input
+                      id="password"
+                      type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
                     />
                   </div>
                   <Button type="submit" className="w-full py-6 mt-4">
-                    Sign In as {role.charAt(0).toUpperCase() + role.slice(1)}
+                    Sign In as {r.label}
                   </Button>
                 </form>
 
                 <div className="mt-6 p-4 bg-muted/50 rounded-lg text-sm">
                   <p className="font-semibold mb-2">Demo Credentials:</p>
-                  <p>Email: <span className="font-mono bg-background px-1 border rounded">{role}@edusphere</span></p>
-                  <p>Password: <span className="font-mono bg-background px-1 border rounded">{role.charAt(0).toUpperCase() + role.slice(1)}@123</span></p>
+                  <p>Email: <span className="font-mono bg-background px-1 border rounded">{r.value}@edusphere</span></p>
+                  <p>Password: <span className="font-mono bg-background px-1 border rounded">{r.value.charAt(0).toUpperCase() + r.value.slice(1)}@123</span></p>
                 </div>
               </TabsContent>
             ))}

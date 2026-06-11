@@ -1,8 +1,11 @@
 import { useData } from "@/contexts/DataContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Clock, Calendar, Bell, FileText } from "lucide-react";
+import { Clock, Calendar, Bell, FileText, Sparkles, BookOpen } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { AIBadge } from "@/components/ai/AIBadge";
 
 export default function StudentDashboard() {
   const { state: auth } = useAuth();
@@ -15,9 +18,18 @@ export default function StudentDashboard() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Welcome back, {student.name.split(' ')[0]}!</h1>
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            Welcome back, {student.name.split(' ')[0]}!
+            <AIBadge />
+          </h1>
           <p className="text-muted-foreground">{student.class} Section {student.section} • Roll No: {student.rollNo}</p>
         </div>
+        <Link href="/student/ai-advisor">
+          <Button className="bg-violet-600 hover:bg-violet-700">
+            <BookOpen className="h-4 w-4 mr-2" />
+            AI Study Buddy
+          </Button>
+        </Link>
         <div className="bg-primary/10 text-primary px-4 py-2 rounded-lg font-medium flex items-center gap-2">
           <Clock className="h-4 w-4" />
           Today's Schedule: 8:00 AM - 3:00 PM
@@ -93,6 +105,20 @@ export default function StudentDashboard() {
           </Card>
         </div>
       </div>
+
+      <Card className="border-violet-200 bg-violet-50/30 dark:bg-violet-950/10">
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-violet-500" />
+            AI Study Insights
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm space-y-2">
+          <p>Great job on Mid-Term Mathematics — <strong>92%</strong>! You're 17% above the class average.</p>
+          <p>AI tip: Focus on <strong>History chapters 4-6</strong> for 20 min/day to boost your score from 78% to 85%+.</p>
+          <p>Predicted term GPA: <strong>3.9</strong> — keep up the excellent attendance at {student.attendancePercent}%!</p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

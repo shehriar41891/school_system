@@ -1,6 +1,11 @@
 import { useData } from "@/contexts/DataContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Users, UserSquare2, Banknote, CalendarCheck } from "lucide-react";
+import { Users, UserSquare2, Banknote, CalendarCheck, Sparkles, Brain } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { AIInsightCard } from "@/components/ai/AIInsightCard";
+import { schoolWideInsights } from "@/data/aiMockData";
+import { AIBadge } from "@/components/ai/AIBadge";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 
 export default function AdminDashboard() {
@@ -30,9 +35,20 @@ export default function AdminDashboard() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Dashboard Overview</h1>
-        <p className="text-muted-foreground">Welcome back, here's what's happening today.</p>
+      <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            Dashboard Overview
+            <AIBadge />
+          </h1>
+          <p className="text-muted-foreground">Welcome back — AI-enhanced school overview.</p>
+        </div>
+        <Link href="/admin/ai-insights">
+          <Button className="bg-violet-600 hover:bg-violet-700">
+            <Brain className="h-4 w-4 mr-2" />
+            AI Insights Center
+          </Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -115,6 +131,18 @@ export default function AdminDashboard() {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+      </div>
+
+      <div>
+        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-violet-500" />
+          AI Priority Alerts
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {schoolWideInsights.slice(0, 2).map((insight) => (
+            <AIInsightCard key={insight.id} insight={insight} />
+          ))}
+        </div>
       </div>
     </div>
   );

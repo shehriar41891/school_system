@@ -6,7 +6,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import { Button } from "@/components/ui/button";
-import { FileText } from "lucide-react";
+import { FileText, Sparkles } from "lucide-react";
+import { AIBadge } from "@/components/ai/AIBadge";
 
 export default function ParentAcademics() {
   const { state } = useData();
@@ -41,8 +42,11 @@ export default function ParentAcademics() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Academics</h1>
-          <p className="text-muted-foreground">View examination results and performance analytics for {student.name}.</p>
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            Academics
+            <AIBadge />
+          </h1>
+          <p className="text-muted-foreground">AI-enhanced examination results and performance analytics for {student.name}.</p>
         </div>
         <Button onClick={() => setLocation("/parent/academics/reportcard")}>
           <FileText className="h-4 w-4 mr-2" />
@@ -108,6 +112,20 @@ export default function ParentAcademics() {
           </Card>
         </div>
       </Tabs>
+
+      <Card className="border-violet-200 bg-violet-50/30 dark:bg-violet-950/10">
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-violet-500" />
+            AI Academic Analysis
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-sm space-y-2 leading-relaxed">
+          <p><strong>{student.name}</strong> averages <strong>87.6%</strong> across Mid-Term subjects — top 15% of class.</p>
+          <p>Standout: Mathematics (92%) and PE (95%). Growth area: History (78%) — AI predicts 85%+ with 20 min daily revision on chapters 4-6.</p>
+          <p>Predicted term GPA: <strong>3.9</strong> based on current trajectory and engagement patterns.</p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

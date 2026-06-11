@@ -1,7 +1,12 @@
 import { useData } from "@/contexts/DataContext";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { GraduationCap, AlertCircle, Calendar, MessageSquare, BookOpen } from "lucide-react";
+import { GraduationCap, AlertCircle, Calendar, MessageSquare, BookOpen, Sparkles, Brain } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { AIInsightCard } from "@/components/ai/AIInsightCard";
+import { parentChildInsights } from "@/data/aiMockData";
+import { AIBadge } from "@/components/ai/AIBadge";
 
 export default function ParentDashboard() {
   const { state: data } = useData();
@@ -14,8 +19,19 @@ export default function ParentDashboard() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Parent Dashboard</h1>
-          <p className="text-muted-foreground">Overview for {child.name}</p>
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            Parent Dashboard
+            <AIBadge />
+          </h1>
+          <p className="text-muted-foreground">AI-powered overview for {child.name}</p>
+        </div>
+        <div className="flex gap-2">
+          <Link href="/parent/ai-analysis">
+            <Button variant="outline" size="sm"><Brain className="h-4 w-4 mr-1" /> AI Analysis</Button>
+          </Link>
+          <Link href="/parent/ai-reports">
+            <Button size="sm" className="bg-violet-600 hover:bg-violet-700"><Sparkles className="h-4 w-4 mr-1" /> Monthly Report</Button>
+          </Link>
         </div>
       </div>
 
@@ -87,6 +103,18 @@ export default function ParentDashboard() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      <div>
+        <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+          <Sparkles className="h-5 w-5 text-violet-500" />
+          AI Insights for {child.name}
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {parentChildInsights.slice(0, 2).map((insight) => (
+            <AIInsightCard key={insight.id} insight={insight} />
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

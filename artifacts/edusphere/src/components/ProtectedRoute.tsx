@@ -4,7 +4,7 @@ import { useEffect } from "react";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  allowedRoles?: ('admin' | 'student' | 'parent')[];
+  allowedRoles?: ('admin' | 'student' | 'parent' | 'principal' | 'teacher')[];
 }
 
 export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) {

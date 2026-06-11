@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useReducer } from 'react';
 
-type Role = 'admin' | 'student' | 'parent';
+type Role = 'admin' | 'student' | 'parent' | 'principal' | 'teacher';
 
 interface User {
   id: string;

@@ -7,6 +7,8 @@ import { DataProvider } from "@/contexts/DataContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { PortalLayout } from "@/components/layout/PortalLayout";
+import { PrincipalLayout } from "@/components/layout/PrincipalLayout";
+import { TeacherLayout } from "@/components/layout/TeacherLayout";
 
 import Landing from "@/pages/landing/Landing";
 import Login from "@/pages/auth/Login";
@@ -34,6 +36,7 @@ import AdminLibrary from "@/pages/admin/Library";
 import AdminTransport from "@/pages/admin/Transport";
 import AdminCalendar from "@/pages/admin/Calendar";
 import AdminReports from "@/pages/admin/Reports";
+import AdminAIInsights from "@/pages/admin/AIInsights";
 import AdminSettings from "@/pages/admin/Settings";
 
 import StudentDashboard from "@/pages/student/Dashboard";
@@ -49,6 +52,7 @@ import StudentLibraryBooks from "@/pages/student/LibraryBooks";
 import StudentNotices from "@/pages/student/Notices";
 import StudentMessages from "@/pages/student/Messages";
 import StudentNotifications from "@/pages/student/Notifications";
+import StudentAIAdvisor from "@/pages/student/AIAdvisor";
 
 import ParentDashboard from "@/pages/parent/Dashboard";
 import ParentChildProfile from "@/pages/parent/ChildProfile";
@@ -61,11 +65,37 @@ import ParentMeetings from "@/pages/parent/Meetings";
 import ParentNotices from "@/pages/parent/Notices";
 import ParentTransport from "@/pages/parent/Transport";
 import ParentProfile from "@/pages/parent/ParentProfile";
+import ParentAIAnalysis from "@/pages/parent/AIAnalysis";
+import ParentAIReports from "@/pages/parent/AIReports";
+import ParentAIAdvisor from "@/pages/parent/AIAdvisor";
+
+import PrincipalDashboard from "@/pages/principal/Dashboard";
+import PrincipalAnalytics from "@/pages/principal/Analytics";
+import PrincipalStudentAnalysis from "@/pages/principal/StudentAnalysis";
+import PrincipalAcademicAnalysis from "@/pages/principal/AcademicAnalysis";
+import PrincipalAttendanceAnalysis from "@/pages/principal/AttendanceAnalysis";
+import PrincipalReports from "@/pages/principal/Reports";
+import PrincipalAdvisor from "@/pages/principal/Advisor";
+import PrincipalMeetings from "@/pages/principal/Meetings";
+import PrincipalMessages from "@/pages/principal/Messages";
+
+import TeacherDashboard from "@/pages/teacher/Dashboard";
+import TeacherClasses from "@/pages/teacher/Classes";
+import TeacherAttendance from "@/pages/teacher/Attendance";
+import TeacherAssignments from "@/pages/teacher/Assignments";
+import TeacherMaterials from "@/pages/teacher/Materials";
+import TeacherSyllabus from "@/pages/teacher/Syllabus";
+import TeacherQuizzes from "@/pages/teacher/Quizzes";
+import TeacherMarks from "@/pages/teacher/Marks";
+import TeacherTimetable from "@/pages/teacher/Timetable";
+import TeacherMessages from "@/pages/teacher/Messages";
+import TeacherAIAssistant from "@/pages/teacher/AIAssistant";
 
 const queryClient = new QueryClient();
 
 const studentNav = [
   { title: "Dashboard", href: "/student/dashboard" },
+  { title: "AI Study Buddy", href: "/student/ai-advisor" },
   { title: "Attendance", href: "/student/attendance" },
   { title: "Timetable", href: "/student/timetable" },
   { title: "Assignments", href: "/student/assignments" },
@@ -79,6 +109,9 @@ const studentNav = [
 
 const parentNav = [
   { title: "Dashboard", href: "/parent/dashboard" },
+  { title: "AI Analysis", href: "/parent/ai-analysis" },
+  { title: "AI Reports", href: "/parent/ai-reports" },
+  { title: "AI Assistant", href: "/parent/ai-advisor" },
   { title: "Child Profile", href: "/parent/child/S001" },
   { title: "Attendance", href: "/parent/attendance" },
   { title: "Academics", href: "/parent/academics" },
@@ -120,6 +153,26 @@ function ParentRoute({ component: Component }: { component: React.ComponentType 
   );
 }
 
+function PrincipalRoute({ component: Component }: { component: React.ComponentType }) {
+  return (
+    <ProtectedRoute allowedRoles={["principal"]}>
+      <PrincipalLayout>
+        <Component />
+      </PrincipalLayout>
+    </ProtectedRoute>
+  );
+}
+
+function TeacherRoute({ component: Component }: { component: React.ComponentType }) {
+  return (
+    <ProtectedRoute allowedRoles={["teacher"]}>
+      <TeacherLayout>
+        <Component />
+      </TeacherLayout>
+    </ProtectedRoute>
+  );
+}
+
 import React from "react";
 
 function Router() {
@@ -155,6 +208,7 @@ function Router() {
       <Route path="/admin/transport" component={() => <AdminRoute component={AdminTransport} />} />
       <Route path="/admin/calendar" component={() => <AdminRoute component={AdminCalendar} />} />
       <Route path="/admin/reports" component={() => <AdminRoute component={AdminReports} />} />
+      <Route path="/admin/ai-insights" component={() => <AdminRoute component={AdminAIInsights} />} />
       <Route path="/admin/settings" component={() => <AdminRoute component={AdminSettings} />} />
       <Route path="/admin" component={() => <AdminRoute component={AdminDashboard} />} />
 
@@ -173,6 +227,7 @@ function Router() {
       <Route path="/student/notices" component={() => <StudentRoute component={StudentNotices} />} />
       <Route path="/student/messages" component={() => <StudentRoute component={StudentMessages} />} />
       <Route path="/student/notifications" component={() => <StudentRoute component={StudentNotifications} />} />
+      <Route path="/student/ai-advisor" component={() => <StudentRoute component={StudentAIAdvisor} />} />
       <Route path="/student" component={() => <StudentRoute component={StudentDashboard} />} />
 
       {/* Parent routes */}
@@ -187,7 +242,36 @@ function Router() {
       <Route path="/parent/notices" component={() => <ParentRoute component={ParentNotices} />} />
       <Route path="/parent/transport" component={() => <ParentRoute component={ParentTransport} />} />
       <Route path="/parent/profile" component={() => <ParentRoute component={ParentProfile} />} />
+      <Route path="/parent/ai-analysis" component={() => <ParentRoute component={ParentAIAnalysis} />} />
+      <Route path="/parent/ai-reports" component={() => <ParentRoute component={ParentAIReports} />} />
+      <Route path="/parent/ai-advisor" component={() => <ParentRoute component={ParentAIAdvisor} />} />
       <Route path="/parent" component={() => <ParentRoute component={ParentDashboard} />} />
+
+      {/* Teacher routes */}
+      <Route path="/teacher/dashboard" component={() => <TeacherRoute component={TeacherDashboard} />} />
+      <Route path="/teacher/classes" component={() => <TeacherRoute component={TeacherClasses} />} />
+      <Route path="/teacher/attendance" component={() => <TeacherRoute component={TeacherAttendance} />} />
+      <Route path="/teacher/assignments" component={() => <TeacherRoute component={TeacherAssignments} />} />
+      <Route path="/teacher/materials" component={() => <TeacherRoute component={TeacherMaterials} />} />
+      <Route path="/teacher/syllabus" component={() => <TeacherRoute component={TeacherSyllabus} />} />
+      <Route path="/teacher/quizzes" component={() => <TeacherRoute component={TeacherQuizzes} />} />
+      <Route path="/teacher/marks" component={() => <TeacherRoute component={TeacherMarks} />} />
+      <Route path="/teacher/timetable" component={() => <TeacherRoute component={TeacherTimetable} />} />
+      <Route path="/teacher/messages" component={() => <TeacherRoute component={TeacherMessages} />} />
+      <Route path="/teacher/ai-assistant" component={() => <TeacherRoute component={TeacherAIAssistant} />} />
+      <Route path="/teacher" component={() => <TeacherRoute component={TeacherDashboard} />} />
+
+      {/* Principal routes */}
+      <Route path="/principal/dashboard" component={() => <PrincipalRoute component={PrincipalDashboard} />} />
+      <Route path="/principal/analytics" component={() => <PrincipalRoute component={PrincipalAnalytics} />} />
+      <Route path="/principal/students" component={() => <PrincipalRoute component={PrincipalStudentAnalysis} />} />
+      <Route path="/principal/academics" component={() => <PrincipalRoute component={PrincipalAcademicAnalysis} />} />
+      <Route path="/principal/attendance" component={() => <PrincipalRoute component={PrincipalAttendanceAnalysis} />} />
+      <Route path="/principal/reports" component={() => <PrincipalRoute component={PrincipalReports} />} />
+      <Route path="/principal/advisor" component={() => <PrincipalRoute component={PrincipalAdvisor} />} />
+      <Route path="/principal/meetings" component={() => <PrincipalRoute component={PrincipalMeetings} />} />
+      <Route path="/principal/messages" component={() => <PrincipalRoute component={PrincipalMessages} />} />
+      <Route path="/principal" component={() => <PrincipalRoute component={PrincipalDashboard} />} />
 
       <Route component={NotFound} />
     </Switch>

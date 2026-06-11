@@ -9,7 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar as CalendarIcon, Clock, Users } from "lucide-react";
+import { Calendar as CalendarIcon, Clock, Users, Sparkles } from "lucide-react";
+import { AIBadge } from "@/components/ai/AIBadge";
+import { meetingAISuggestions } from "@/data/aiMockData";
 
 export default function ParentMeetings() {
   const { state } = useData();
@@ -39,10 +41,35 @@ export default function ParentMeetings() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Meetings</h1>
-        <p className="text-muted-foreground">Schedule and view parent-teacher meetings.</p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Meetings</h1>
+          <p className="text-muted-foreground">Schedule and view parent-teacher meetings with AI recommendations.</p>
+        </div>
+        <AIBadge />
       </div>
+
+      <Card className="border-violet-200 bg-violet-50/30 dark:bg-violet-950/10">
+        <CardHeader>
+          <CardTitle className="text-base flex items-center gap-2">
+            <Sparkles className="h-5 w-5 text-violet-500" />
+            AI-Suggested Meetings
+          </CardTitle>
+          <CardDescription>Based on your child's academic analysis — tap to pre-fill a request</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {meetingAISuggestions.map((s) => (
+            <div key={s.topic} className="flex items-start justify-between p-3 rounded-lg border bg-card">
+              <div>
+                <p className="font-medium text-sm">{s.topic}</p>
+                <p className="text-xs text-muted-foreground mt-1">{s.reason}</p>
+                <p className="text-xs text-violet-600 dark:text-violet-400 mt-1">Suggested: {s.suggestedTeacher}</p>
+              </div>
+              <Badge variant="outline" className="capitalize shrink-0 text-xs">{s.priority}</Badge>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-1 h-fit">
