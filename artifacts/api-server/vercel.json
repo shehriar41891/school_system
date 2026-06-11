@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "cd ../.. && pnpm install",
-  "buildCommand": "cd ../.. && node artifacts/edusphere/scripts/build.mjs",
+  "buildCommand": "cd ../.. && pnpm --filter @workspace/edusphere run build",
   "outputDirectory": "../edusphere/dist/public",
   "framework": null,
   "env": {

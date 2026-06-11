@@ -22,7 +22,7 @@ Vercel reads commands from `vercel.json` automatically when overrides are off.
 
 Uses `artifacts/edusphere/vercel.json`:
 - Install: `cd ../.. && pnpm install --filter @workspace/edusphere...`
-- Build: `node scripts/build.mjs`
+- Build: `pnpm run build`
 - Output: `dist/public`
 
 In the build log you should see: `[edusphere] build.mjs starting`
