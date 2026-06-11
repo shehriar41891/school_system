@@ -1,8 +1,9 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install",
-  "buildCommand": "cd artifacts/edusphere && pnpm run build",
+  "buildCommand": "pnpm --filter @workspace/edusphere run build",
   "outputDirectory": "artifacts/edusphere/dist/public",
   "framework": null,
+  "ignoreCommand": "git diff HEAD^ HEAD --quiet -- artifacts/edusphere vercel.json package.json pnpm-lock.yaml",
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
