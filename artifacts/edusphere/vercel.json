@@ -4,5 +4,9 @@
   "outputDirectory": "dist/public",
   "installCommand": "cd ../.. && pnpm install",
   "framework": "vite",
+  "env": {
+    "PORT": "5173",
+    "BASE_PATH": "/"
+  },
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }

@@ -4,5 +4,9 @@
   "buildCommand": "cd ../.. && pnpm --filter @workspace/edusphere run build",
   "outputDirectory": "../edusphere/dist/public",
   "framework": null,
+  "env": {
+    "PORT": "5173",
+    "BASE_PATH": "/"
+  },
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
