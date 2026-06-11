@@ -12,7 +12,6 @@ import Landing from "@/pages/landing/Landing";
 import Login from "@/pages/auth/Login";
 import NotFound from "@/pages/not-found";
 
-// Admin pages
 import AdminDashboard from "@/pages/admin/Dashboard";
 import AdminStudents from "@/pages/admin/Students";
 import AdminStudentProfile from "@/pages/admin/StudentProfile";
@@ -37,7 +36,6 @@ import AdminCalendar from "@/pages/admin/Calendar";
 import AdminReports from "@/pages/admin/Reports";
 import AdminSettings from "@/pages/admin/Settings";
 
-// Student pages
 import StudentDashboard from "@/pages/student/Dashboard";
 import StudentProfile from "@/pages/student/Profile";
 import StudentAttendance from "@/pages/student/Attendance";
@@ -52,7 +50,6 @@ import StudentNotices from "@/pages/student/Notices";
 import StudentMessages from "@/pages/student/Messages";
 import StudentNotifications from "@/pages/student/Notifications";
 
-// Parent pages
 import ParentDashboard from "@/pages/parent/Dashboard";
 import ParentChildProfile from "@/pages/parent/ChildProfile";
 import ParentAttendance from "@/pages/parent/Attendance";
@@ -93,88 +90,104 @@ const parentNav = [
   { title: "Profile", href: "/parent/profile" },
 ];
 
+function AdminRoute({ component: Component }: { component: React.ComponentType }) {
+  return (
+    <ProtectedRoute allowedRoles={["admin"]}>
+      <AdminLayout>
+        <Component />
+      </AdminLayout>
+    </ProtectedRoute>
+  );
+}
+
+function StudentRoute({ component: Component }: { component: React.ComponentType }) {
+  return (
+    <ProtectedRoute allowedRoles={["student"]}>
+      <PortalLayout navItems={studentNav} portalName="Student Portal">
+        <Component />
+      </PortalLayout>
+    </ProtectedRoute>
+  );
+}
+
+function ParentRoute({ component: Component }: { component: React.ComponentType }) {
+  return (
+    <ProtectedRoute allowedRoles={["parent"]}>
+      <PortalLayout navItems={parentNav} portalName="Parent Portal">
+        <Component />
+      </PortalLayout>
+    </ProtectedRoute>
+  );
+}
+
+import React from "react";
+
 function Router() {
   return (
     <Switch>
       <Route path="/" component={Landing} />
       <Route path="/login" component={Login} />
 
-      <Route path="/admin/:rest*">
-        <ProtectedRoute allowedRoles={["admin"]}>
-          <AdminLayout>
-            <Switch>
-              <Route path="/admin/dashboard" component={AdminDashboard} />
-              <Route path="/admin/students/new" component={AdminAddStudent} />
-              <Route path="/admin/students/:id" component={AdminStudentProfile} />
-              <Route path="/admin/students" component={AdminStudents} />
-              <Route path="/admin/teachers/:id" component={AdminTeacherProfile} />
-              <Route path="/admin/teachers" component={AdminTeachers} />
-              <Route path="/admin/classes" component={AdminClasses} />
-              <Route path="/admin/attendance/mark" component={AdminAttendanceMark} />
-              <Route path="/admin/attendance/reports" component={AdminAttendanceReports} />
-              <Route path="/admin/academic/exams" component={AdminExamSchedule} />
-              <Route path="/admin/academic/marks" component={AdminMarksEntry} />
-              <Route path="/admin/academic/reportcards" component={AdminReportCards} />
-              <Route path="/admin/fees/structure" component={AdminFeeStructure} />
-              <Route path="/admin/fees/collection" component={AdminFeeCollection} />
-              <Route path="/admin/fees/reports" component={AdminFeeReports} />
-              <Route path="/admin/timetable" component={AdminTimetable} />
-              <Route path="/admin/communication/notices" component={AdminNotices} />
-              <Route path="/admin/communication/messages" component={AdminMessages} />
-              <Route path="/admin/library" component={AdminLibrary} />
-              <Route path="/admin/transport" component={AdminTransport} />
-              <Route path="/admin/calendar" component={AdminCalendar} />
-              <Route path="/admin/reports" component={AdminReports} />
-              <Route path="/admin/settings" component={AdminSettings} />
-              <Route component={() => <AdminDashboard />} />
-            </Switch>
-          </AdminLayout>
-        </ProtectedRoute>
-      </Route>
+      {/* Admin routes */}
+      <Route path="/admin/dashboard" component={() => <AdminRoute component={AdminDashboard} />} />
+      <Route path="/admin/students/new" component={() => <AdminRoute component={AdminAddStudent} />} />
+      <Route path="/admin/students/:id" component={() => <AdminRoute component={AdminStudentProfile} />} />
+      <Route path="/admin/students" component={() => <AdminRoute component={AdminStudents} />} />
+      <Route path="/admin/teachers/:id" component={() => <AdminRoute component={AdminTeacherProfile} />} />
+      <Route path="/admin/teachers" component={() => <AdminRoute component={AdminTeachers} />} />
+      <Route path="/admin/classes" component={() => <AdminRoute component={AdminClasses} />} />
+      <Route path="/admin/attendance/mark" component={() => <AdminRoute component={AdminAttendanceMark} />} />
+      <Route path="/admin/attendance/reports" component={() => <AdminRoute component={AdminAttendanceReports} />} />
+      <Route path="/admin/attendance" component={() => <AdminRoute component={AdminAttendanceReports} />} />
+      <Route path="/admin/academic/exams" component={() => <AdminRoute component={AdminExamSchedule} />} />
+      <Route path="/admin/academic/marks" component={() => <AdminRoute component={AdminMarksEntry} />} />
+      <Route path="/admin/academic/reportcards" component={() => <AdminRoute component={AdminReportCards} />} />
+      <Route path="/admin/academic" component={() => <AdminRoute component={AdminExamSchedule} />} />
+      <Route path="/admin/fees/structure" component={() => <AdminRoute component={AdminFeeStructure} />} />
+      <Route path="/admin/fees/collection" component={() => <AdminRoute component={AdminFeeCollection} />} />
+      <Route path="/admin/fees/reports" component={() => <AdminRoute component={AdminFeeReports} />} />
+      <Route path="/admin/fees" component={() => <AdminRoute component={AdminFeeCollection} />} />
+      <Route path="/admin/timetable" component={() => <AdminRoute component={AdminTimetable} />} />
+      <Route path="/admin/communication/notices" component={() => <AdminRoute component={AdminNotices} />} />
+      <Route path="/admin/communication/messages" component={() => <AdminRoute component={AdminMessages} />} />
+      <Route path="/admin/communication" component={() => <AdminRoute component={AdminNotices} />} />
+      <Route path="/admin/library" component={() => <AdminRoute component={AdminLibrary} />} />
+      <Route path="/admin/transport" component={() => <AdminRoute component={AdminTransport} />} />
+      <Route path="/admin/calendar" component={() => <AdminRoute component={AdminCalendar} />} />
+      <Route path="/admin/reports" component={() => <AdminRoute component={AdminReports} />} />
+      <Route path="/admin/settings" component={() => <AdminRoute component={AdminSettings} />} />
+      <Route path="/admin" component={() => <AdminRoute component={AdminDashboard} />} />
 
-      <Route path="/student/:rest*">
-        <ProtectedRoute allowedRoles={["student"]}>
-          <PortalLayout navItems={studentNav} portalName="Student Portal">
-            <Switch>
-              <Route path="/student/dashboard" component={StudentDashboard} />
-              <Route path="/student/profile" component={StudentProfile} />
-              <Route path="/student/attendance" component={StudentAttendance} />
-              <Route path="/student/timetable" component={StudentTimetable} />
-              <Route path="/student/assignments" component={StudentAssignments} />
-              <Route path="/student/exams" component={StudentExams} />
-              <Route path="/student/results" component={StudentResults} />
-              <Route path="/student/fees" component={StudentFees} />
-              <Route path="/student/library/materials" component={StudentStudyMaterials} />
-              <Route path="/student/library/books" component={StudentLibraryBooks} />
-              <Route path="/student/notices" component={StudentNotices} />
-              <Route path="/student/messages" component={StudentMessages} />
-              <Route path="/student/notifications" component={StudentNotifications} />
-              <Route component={() => <StudentDashboard />} />
-            </Switch>
-          </PortalLayout>
-        </ProtectedRoute>
-      </Route>
+      {/* Student routes */}
+      <Route path="/student/dashboard" component={() => <StudentRoute component={StudentDashboard} />} />
+      <Route path="/student/profile" component={() => <StudentRoute component={StudentProfile} />} />
+      <Route path="/student/attendance" component={() => <StudentRoute component={StudentAttendance} />} />
+      <Route path="/student/timetable" component={() => <StudentRoute component={StudentTimetable} />} />
+      <Route path="/student/assignments" component={() => <StudentRoute component={StudentAssignments} />} />
+      <Route path="/student/exams" component={() => <StudentRoute component={StudentExams} />} />
+      <Route path="/student/results" component={() => <StudentRoute component={StudentResults} />} />
+      <Route path="/student/fees" component={() => <StudentRoute component={StudentFees} />} />
+      <Route path="/student/library/materials" component={() => <StudentRoute component={StudentStudyMaterials} />} />
+      <Route path="/student/library/books" component={() => <StudentRoute component={StudentLibraryBooks} />} />
+      <Route path="/student/library" component={() => <StudentRoute component={StudentStudyMaterials} />} />
+      <Route path="/student/notices" component={() => <StudentRoute component={StudentNotices} />} />
+      <Route path="/student/messages" component={() => <StudentRoute component={StudentMessages} />} />
+      <Route path="/student/notifications" component={() => <StudentRoute component={StudentNotifications} />} />
+      <Route path="/student" component={() => <StudentRoute component={StudentDashboard} />} />
 
-      <Route path="/parent/:rest*">
-        <ProtectedRoute allowedRoles={["parent"]}>
-          <PortalLayout navItems={parentNav} portalName="Parent Portal">
-            <Switch>
-              <Route path="/parent/dashboard" component={ParentDashboard} />
-              <Route path="/parent/child/:id" component={ParentChildProfile} />
-              <Route path="/parent/attendance" component={ParentAttendance} />
-              <Route path="/parent/academics/reportcard" component={ParentReportCard} />
-              <Route path="/parent/academics" component={ParentAcademics} />
-              <Route path="/parent/fees" component={ParentFees} />
-              <Route path="/parent/messages" component={ParentMessages} />
-              <Route path="/parent/meetings" component={ParentMeetings} />
-              <Route path="/parent/notices" component={ParentNotices} />
-              <Route path="/parent/transport" component={ParentTransport} />
-              <Route path="/parent/profile" component={ParentProfile} />
-              <Route component={() => <ParentDashboard />} />
-            </Switch>
-          </PortalLayout>
-        </ProtectedRoute>
-      </Route>
+      {/* Parent routes */}
+      <Route path="/parent/dashboard" component={() => <ParentRoute component={ParentDashboard} />} />
+      <Route path="/parent/child/:id" component={() => <ParentRoute component={ParentChildProfile} />} />
+      <Route path="/parent/attendance" component={() => <ParentRoute component={ParentAttendance} />} />
+      <Route path="/parent/academics/reportcard" component={() => <ParentRoute component={ParentReportCard} />} />
+      <Route path="/parent/academics" component={() => <ParentRoute component={ParentAcademics} />} />
+      <Route path="/parent/fees" component={() => <ParentRoute component={ParentFees} />} />
+      <Route path="/parent/messages" component={() => <ParentRoute component={ParentMessages} />} />
+      <Route path="/parent/meetings" component={() => <ParentRoute component={ParentMeetings} />} />
+      <Route path="/parent/notices" component={() => <ParentRoute component={ParentNotices} />} />
+      <Route path="/parent/transport" component={() => <ParentRoute component={ParentTransport} />} />
+      <Route path="/parent/profile" component={() => <ParentRoute component={ParentProfile} />} />
+      <Route path="/parent" component={() => <ParentRoute component={ParentDashboard} />} />
 
       <Route component={NotFound} />
     </Switch>
