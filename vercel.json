@@ -6,7 +6,8 @@
   "framework": null,
   "env": {
     "PORT": "5173",
-    "BASE_PATH": "/"
+    "BASE_PATH": "/",
+    "NODE_ENV": "production"
   },
   "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
 }
